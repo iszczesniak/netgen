@@ -1,7 +1,5 @@
 #include "cli_args.hpp"
 
-#include "connection.hpp"
-#include "routing.hpp"
 #include "utils.hpp"
 
 #include <iostream>
@@ -13,9 +11,6 @@
 
 // Option strings.
 #define NT_S "nt"
-#define ST_S "st"
-#define MLC_S "mlc"
-#define K_S "K"
 #define EDGES_S "edges"
 #define NODES_S "nodes"
 
