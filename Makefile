@@ -1,8 +1,7 @@
-TARGETS = ad info
+TARGETS = netgen info
 TARGET_OBJS = $(addsuffix .o, $(TARGETS))
 
-OBJS = cli_args.o client.o connection.o constraints.o routing.o		\
-stats.o utils.o utils_netgen.o mypoint.o teventqueue.o traffic.o
+OBJS = cli_args.o utils.o mypoint.o teventqueue.o
 
 CXXFLAGS := $(CXXFLAGS) -g
 CXXFLAGS := $(CXXFLAGS) -std=c++14
@@ -22,11 +21,9 @@ LDFLAGS := $(LDFLAGS) -l boost_system
 
 all: $(TARGETS)
 
-ad: $(OBJS)
+netgen: $(OBJS)
 
 info: $(OBJS)
-
-try: graph.o try.o
 
 .PHONY: clean count depend test
 
