@@ -1,7 +1,5 @@
 #include "graph.hpp"
 #include "cli_args.hpp"
-#include "sim.hpp"
-#include "stats.hpp"
 #include "utils.hpp"
 
 using namespace std;
