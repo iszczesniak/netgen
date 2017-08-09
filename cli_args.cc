@@ -1,9 +1,6 @@
 #include "cli_args.hpp"
 
-#include "utils.hpp"
-
 #include <iostream>
-#include <map>
 #include <sstream>
 #include <string>
 
@@ -71,16 +68,16 @@ process_cli_args(int argc, const char *argv[])
          "the number of nodes to generate")
 
         (EDGES_S, po::value<int>(),
-         "the number of edges to generate")
+         "the number of edges to generate");
 
-      // Simulation options.
-      po::options_description sim("Simulation options");
-      sim.add_options()
+      // Some other options.
+      po::options_description soo("Simulation options");
+      soo.add_options()
         ("seed", po::value<int>()->default_value(1),
          "the seed of the random number generator");
 
       po::options_description all("Allowed options");
-      all.add(gen).add(net).add(tra).add(sim);
+      all.add(gen).add(net).add(soo);
       
       po::variables_map vm;
       po::store(po::command_line_parser(argc, argv).options(all).run(), vm);
