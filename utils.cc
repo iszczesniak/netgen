@@ -1,5 +1,3 @@
-#include "utils_netgen.hpp"
-
 #include "utils.hpp"
 
 #include <cmath>
