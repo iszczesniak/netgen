@@ -32,42 +32,56 @@ void
 name_vertices(graph &g);
 
 /**
- * Sets the distance property on edges.
+ * Return a container with vertexes of a graph.
  */
-template<typename T>
-void
-set_distances(graph &g, int min, int max, T &gen)
+template<typename C>
+C
+get_vertexes(const graph &g)
 {
-  boost::uniform_int<> range(min, max);
-  boost::variate_generator<T &, boost::uniform_int<> > rgen(gen, range);
-  boost::randomize_property<boost::edge_weight_t>(g, rgen);
+  C c;
+
+  // Copy the vertex descriptors.
+  std::copy(vertices(g).first, vertices(g).second,
+            inserter(c, c.begin()));
+
+  return c;
 }
 
 /**
- * Sets the slices property on edges.
+ * Get a random element from a container.
  */
-template<typename G>
-void
-set_slices(G &g, int slices)
+template <typename C, typename E>
+typename C::value_type
+get_random_element(const C &c, E &eng)
 {
-  // This is the set of contiguous slices, from 0 to (slices
-  // - 1).
-  SSC ssc(boost::counting_iterator<int>(0),
-          boost::counting_iterator<int>(slices));
+  assert(!c.empty());
 
-  // Total slices property map.
-  typename boost::property_map<G, boost::edge_nosc_t>::type
-    tpm = get(boost::edge_nosc_t(), g);
-  // Available slices property map.
-  typename boost::property_map<G, boost::edge_ssc_t>::type
-    apm = get(boost::edge_ssc_t(), g);
+  typename C::const_iterator i = c.begin();
+  std::advance(i, get_random_int(0, c.size() - 1, eng));
 
-  typename G::edge_iterator ei, ee;
-  for (tie(ei, ee) = edges(g); ei != ee; ++ei)
+  return *i;
+}
+
+/**
+ * Interpret a string, and return the matched enum.
+ */
+template <typename T>
+T
+interpret(const std::string &name, const std::string &text,
+          const std::map <std::string, T> &m)
+{
+  auto i = m.find (text);
+
+  if (i == m.end ())
     {
-      tpm[*ei] = slices;
-      apm[*ei] = ssc;
+      std::cerr << "Wrong value of " << name << ".  Choose one of:";
+      for (auto &p: m)
+        std::cerr << " " << p.first;
+      std::cerr << std::endl;
+      exit (1);
     }
+
+  return i->second;
 }
 
 /**
@@ -95,17 +109,17 @@ bool
 add_random_edge(graph &g, std::set<vertex> &lonely,
                 std::set<vertex> &connected,
                 std::set<vertex> &saturated,
-                T &gen)
+                T &eng)
 {
   // The condition for the first edge ever created in the graph.
   if (lonely.size() >= 2 && connected.empty() && saturated.empty())
     {
       // Select two lone vertexes, which will be the end nodes of the
       // first edge created.
-      vertex src = get_random_element(lonely, gen);
+      vertex src = get_random_element(lonely, eng);
       // Move the src node from lonely before we pick the dst node.
       move(src, g, lonely, connected, saturated);
-      vertex dst = get_random_element(lonely, gen);
+      vertex dst = get_random_element(lonely, eng);
       move(dst, g, lonely, connected, saturated);
       bool status = add_edge(src, dst, g).second;
       assert(status);
@@ -116,8 +130,8 @@ add_random_edge(graph &g, std::set<vertex> &lonely,
     {
       // Add a new edge where one vertex belongs to the connected
       // component, while the other is a lone one.
-      vertex src = get_random_element(lonely, gen);
-      vertex dst = get_random_element(connected, gen);
+      vertex src = get_random_element(lonely, eng);
+      vertex dst = get_random_element(connected, eng);
       bool status = add_edge(src, dst, g).second;
       assert(status);
       move(src, g, lonely, connected, saturated);
@@ -130,14 +144,14 @@ add_random_edge(graph &g, std::set<vertex> &lonely,
       // Now we have to create an edge where both vertexes of the edge
       // belong to the connected component.  We have to be carefull
       // not to create a parallel edge.
-      vertex src = get_random_element(connected, gen);
+      vertex src = get_random_element(connected, eng);
       // These are the vertexes that can be destination nodes.
       std::set<vertex> sifted = connected;
       sifted.erase(src);
       BGL_FORALL_OUTEDGES_T(src, e, g, graph)
         sifted.erase(target(e, g));
       // Now pick from the sifted set.
-      vertex dst = get_random_element(sifted, gen);
+      vertex dst = get_random_element(sifted, eng);
       bool status = boost::add_edge(src, dst, g).second;
       assert(status);
       move_if_needed(src, g, connected, saturated);
@@ -189,9 +203,6 @@ generate_random_graph(const cli_args &args, T &gen)
   // Make sure we created the requested number of edges.
   assert(num_edges (g) == args.nr_edges.get());
 
-  // The distance for each edge.
-  set_distances(g, 100, 200, gen);
-
   return g;
 }
 
@@ -230,20 +241,7 @@ generate_graph(const cli_args &args, T &gen)
   // Name the vertexes.
   name_vertices(g);
 
-  // The number of slices for each edge.
-  set_slices(g, args.nr_sc);
-
   return g;
 }
-
-// For the shortest paths between all node pairs, calculate the
-// statistics for hops and lengths.
-void
-calc_sp_stats(const graph &g, dbl_acc &hop_acc, dbl_acc &len_acc);
-
-// Calculate the mean connection arrival time for the given arguments
-// and the given graph.
-double
-calc_mcat(const cli_args &args, const graph &g, double mnh);
 
 #endif /* UTILS_NETGEN_HPP */

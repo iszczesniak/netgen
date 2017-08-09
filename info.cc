@@ -1,8 +1,6 @@
 #include "graph.hpp"
 #include "cli_args.hpp"
-#include "sim.hpp"
-#include "stats.hpp"
-#include "utils_netgen.hpp"
+#include "utils.hpp"
 
 #include <boost/random.hpp>
 

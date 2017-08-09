@@ -1,4 +1,4 @@
-TARGETS = netgen info
+TARGETS = netgen
 TARGET_OBJS = $(addsuffix .o, $(TARGETS))
 
 OBJS = cli_args.o utils.o mypoint.o teventqueue.o

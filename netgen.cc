@@ -2,11 +2,13 @@
 #include "cli_args.hpp"
 #include "utils.hpp"
 
+#include <random>
+
 using namespace std;
 
 int
 main(int argc, const char* argv[])
 {
   cli_args args = process_cli_args(argc, argv);
-  graph g = generate_graph(args);
+  graph g = generate_graph(args, std::default_random_engine());
 }
