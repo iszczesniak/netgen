@@ -172,7 +172,7 @@ add_random_edge(graph &g, std::set<vertex> &lonely,
  */
 template<typename T>
 graph
-generate_random_graph(const cli_args &args, T &gen)
+generate_random_graph(const cli_args &args, T &eng)
 {
   assert(args.nr_nodes >= 2);
   assert(args.nr_edges.get() >= 0);
@@ -191,7 +191,7 @@ generate_random_graph(const cli_args &args, T &gen)
 
   // In every iteration we add a new random edge.
   for (int created = 0; created < args.nr_edges.get(); ++created)
-    if (!add_random_edge(g, lonely, connected, saturated, gen))
+    if (!add_random_edge(g, lonely, connected, saturated, eng))
       {
         assert(lonely.empty());
         assert(connected.size() <= 1);
@@ -219,7 +219,7 @@ generate_gabriel_graph(const cli_args &args);
 
 template<typename T>
 graph
-generate_graph(const cli_args &args, T &gen)
+generate_graph(const cli_args &args, T &eng)
 {
   graph g;
 
@@ -227,11 +227,11 @@ generate_graph(const cli_args &args, T &gen)
   switch (nt)
     {
     case nt_t::random_network:
-      g = generate_random_graph(args, gen);
+      g = generate_random_graph(args, eng);
       break;
       
     case nt_t::gabriel_network:
-      g = generate_gabriel_graph(args);
+      g = generate_gabriel_graph(args, eng);
       break;
 
     default:
