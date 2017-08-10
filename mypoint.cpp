@@ -109,16 +109,3 @@ long double whereTurn(const TMyPoint &p0, const TMyPoint &p1, const TMyPoint &p2
   TMyPoint vP0P2(p2.x-p0.x, p2.y-p0.y);
   return (vP0P1.y * vP0P2.x ) - (vP0P1.x * vP0P2.y);
 }
-
-ostream& operator << (ostream & out, list<TMyPoint> &l)
-{
-    out << "<";
-    for( list<TMyPoint>::iterator it = l.begin(); it != l.end(); ++it )
-    {
-        if (it == l.begin())
-        out << *it;
-    else
-     out << ", " << *it;
-    }
-  return out << ">";
-}
