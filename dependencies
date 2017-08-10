@@ -1,0 +1,7 @@
+cli_args.o: cli_args.cc cli_args.hpp
+info.o: info.cc graph.hpp cli_args.hpp utils.hpp mypoint.hpp \
+ teventqueue.hpp
+netgen.o: netgen.cc graph.hpp cli_args.hpp utils.hpp mypoint.hpp \
+ teventqueue.hpp
+utils.o: utils.cc utils.hpp graph.hpp mypoint.hpp cli_args.hpp \
+ teventqueue.hpp
