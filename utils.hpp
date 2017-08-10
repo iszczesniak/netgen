@@ -48,6 +48,18 @@ get_vertexes(const graph &g)
 }
 
 /**
+ * Generate a random number from min to max, including both min and
+ * max.
+ */
+template<typename E>
+int
+get_random_int(int min, int max, E &eng)
+{
+  std::uniform_int_distribution<> d(min, max);
+  return d(eng);
+}
+
+/**
  * Get a random element from a container.
  */
 template <typename C, typename E>
@@ -231,7 +243,7 @@ generate_graph(const cli_args &args, T &eng)
       break;
       
     case nt_t::gabriel_network:
-      g = generate_gabriel_graph(args, eng);
+      g = generate_gabriel_graph(args);
       break;
 
     default:

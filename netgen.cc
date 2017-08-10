@@ -10,5 +10,7 @@ int
 main(int argc, const char* argv[])
 {
   cli_args args = process_cli_args(argc, argv);
-  graph g = generate_graph(args, std::default_random_engine());
+  default_random_engine eng;
+  eng.seed(args.seed);
+  graph g = generate_graph(args, eng);
 }
