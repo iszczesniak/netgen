@@ -1,10 +1,11 @@
-#ifndef UTILS_HPP
-#define UTILS_HPP
+#ifndef GABRIEL_HPP
+#define GABRIEL_HPP
 
-#include "gabriel.hpp"
 #include "graph.hpp"
+#include "mypoint.hpp"
 #include "cli_args.hpp"
 #include "utils.hpp"
+#include "teventqueue.hpp"
 
 #include <iostream>
 #include <iterator>
@@ -217,31 +218,15 @@ generate_random_graph(const cli_args &args, T &eng)
   return g;
 }
 
-template<typename T>
+/**
+ * Generate the Gabriel graph.  The graph has one connected component.
+ * We don't allow for loop edges (i.e. that start and end at the same
+ * node), and we don't allow for parallel edges.
+ *
+ * @return the graph
+ */
+
 graph
-generate_graph(const cli_args &args, T &eng)
-{
-  graph g;
+generate_gabriel_graph(const cli_args &args);
 
-  nt_t nt = nt_interpret(args.nt);
-  switch (nt)
-    {
-    case nt_t::random_network:
-      g = generate_random_graph(args, eng);
-      break;
-      
-    case nt_t::gabriel_network:
-      g = generate_gabriel_graph(args);
-      break;
-
-    default:
-      abort();
-    }
-  
-  // Name the vertexes.
-  name_vertices(g);
-
-  return g;
-}
-
-#endif /* UTILS_HPP */
+#endif /* GABRIEL_HPP */

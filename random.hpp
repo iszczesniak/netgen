@@ -1,7 +1,6 @@
-#ifndef UTILS_HPP
-#define UTILS_HPP
+#ifndef RANDOM_HPP
+#define RANDOM_HPP
 
-#include "gabriel.hpp"
 #include "graph.hpp"
 #include "cli_args.hpp"
 #include "utils.hpp"
@@ -12,7 +11,6 @@
 #include <vector>
 #include <utility>
 
-#include <boost/graph/random.hpp>
 #include <boost/graph/iteration_macros.hpp>
 #include <boost/iterator/counting_iterator.hpp>
 
@@ -217,31 +215,4 @@ generate_random_graph(const cli_args &args, T &eng)
   return g;
 }
 
-template<typename T>
-graph
-generate_graph(const cli_args &args, T &eng)
-{
-  graph g;
-
-  nt_t nt = nt_interpret(args.nt);
-  switch (nt)
-    {
-    case nt_t::random_network:
-      g = generate_random_graph(args, eng);
-      break;
-      
-    case nt_t::gabriel_network:
-      g = generate_gabriel_graph(args);
-      break;
-
-    default:
-      abort();
-    }
-  
-  // Name the vertexes.
-  name_vertices(g);
-
-  return g;
-}
-
-#endif /* UTILS_HPP */
+#endif /* RANDOM_HPP */
