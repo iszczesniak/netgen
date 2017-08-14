@@ -13,10 +13,6 @@
 #include <vector>
 #include <utility>
 
-#include <boost/graph/random.hpp>
-#include <boost/graph/iteration_macros.hpp>
-#include <boost/iterator/counting_iterator.hpp>
-
 using namespace std;
 
 // The network type.
