@@ -2,10 +2,6 @@
 
 #include <cmath>
 #include <sstream>
-#include <iomanip>
-
-#include <boost/graph/dijkstra_shortest_paths.hpp>
-#include <boost/range.hpp>
 
 using namespace std;
 

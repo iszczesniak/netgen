@@ -77,7 +77,7 @@ add_random_edge(graph &g, std::set<vertex> &lonely,
       // These are the vertexes that can be destination nodes.
       std::set<vertex> sifted = connected;
       sifted.erase(src);
-      BGL_FORALL_OUTEDGES_T(src, e, g, graph)
+      for(edge e: make_iterator_range(out_edges(src, g)))
         sifted.erase(target(e, g));
       // Now pick from the sifted set.
       vertex dst = get_random_element(sifted, eng);
