@@ -1,71 +1,15 @@
+#include "gabriel.hpp"
+
+#include "mypoint.hpp"
+#include "teventqueue.hpp"
 #include "utils.hpp"
 
-#include <cmath>
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>   
 #include <sstream>
 #include <iomanip>
 
-#include <boost/graph/dijkstra_shortest_paths.hpp>
-#include <boost/range.hpp>
-
 using namespace std;
-
-// Handles the network parameter.
-nt_t
-nt_interpret (const string &nt)
-{
-  map <string, nt_t> nt_map;
-  nt_map["random"] = nt_t::random_network;
-  nt_map["gabriel"] = nt_t::gabriel_network;
-  return interpret ("network type", nt, nt_map);
-}
-
-void
-name_vertices(graph &g)
-{
-  int count = 1;
-
-  int number = num_vertices(g);
-  int width = int(log10(number)) + 1;
-
-  BGL_FORALL_VERTICES(v, g, graph)
-    {
-      ostringstream out;
-      out << "v" << setw(width) << setfill('0') << count++;
-      boost::get(boost::vertex_name, g, v) = out.str();
-    }
-}
-
-void
-move(vertex v, const graph &g, std::set<vertex> &lonely,
-     std::set<vertex> &connected, std::set<vertex> &saturated)
-{
-  lonely.erase(v);
-
-  if (num_vertices(g) >= 3)
-    connected.insert(v);
-  else
-    saturated.insert(v);
-}
-
-void
-move_if_needed(vertex v, const graph &g, std::set<vertex> &connected,
-               std::set<vertex> &saturated)
-{
-  int n = boost::num_vertices(g);
-  int od = boost::out_degree(v, g);
-
-  // A node can have the out degree of at most (n - 1).
-  assert(od < n);
-
-  // A node is saturated if its out degree is (n - 1).
-  if (od == n - 1)
-    {
-      connected.erase(v);
-      saturated.insert(v);
-    }
-}
 
 graph
 generate_gabriel_graph(const cli_args &args)
