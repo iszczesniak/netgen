@@ -1,6 +1,7 @@
 #include "utils.hpp"
 
 #include <cmath>
+#include <iomanip>
 #include <sstream>
 
 using namespace std;
@@ -23,7 +24,7 @@ name_vertices(graph &g)
   int number = num_vertices(g);
   int width = int(log10(number)) + 1;
 
-  BGL_FORALL_VERTICES(v, g, graph)
+  for(vertex v: make_iterator_range(vertices(g)))
     {
       ostringstream out;
       out << "v" << setw(width) << setfill('0') << count++;

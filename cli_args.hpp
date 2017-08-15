@@ -6,6 +6,9 @@
 
 using namespace std;
 
+// The network type.
+enum class nt_t {random_network, gabriel_network};
+
 /**
  * These are the program arguments.  In this single class we store all
  * information passed at the command line.

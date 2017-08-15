@@ -1,3 +1,4 @@
+#include "generate.hpp"
 #include "graph.hpp"
 #include "cli_args.hpp"
 #include "utils.hpp"
@@ -6,8 +7,6 @@
 
 #include <iostream>
 #include <random>
-
-using namespace std;
 
 int
 main(int argc, const char* argv[])
