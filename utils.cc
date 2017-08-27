@@ -1,5 +1,7 @@
 #include "utils.hpp"
 
+#include <boost/range.hpp>
+
 #include <cmath>
 #include <iomanip>
 #include <sstream>
@@ -24,7 +26,7 @@ name_vertices(graph &g)
   int number = num_vertices(g);
   int width = int(log10(number)) + 1;
 
-  for(vertex v: make_iterator_range(vertices(g)))
+  for(vertex v: boost::make_iterator_range(vertices(g)))
     {
       ostringstream out;
       out << "v" << setw(width) << setfill('0') << count++;
