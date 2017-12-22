@@ -1,3 +1,4 @@
+#include "generate.hpp"
 #include "graph.hpp"
 #include "cli_args.hpp"
 #include "utils.hpp"

@@ -1,5 +1,6 @@
 #include "utils.hpp"
 
+#include <boost/graph/dijkstra_shortest_paths.hpp>
 #include <boost/range.hpp>
 
 #include <cmath>
@@ -31,5 +32,40 @@ name_vertices(graph &g)
       ostringstream out;
       out << "v" << setw(width) << setfill('0') << count++;
       boost::get(boost::vertex_name, g, v) = out.str();
+    }
+}
+
+void
+calc_sp_stats(const graph &g, dbl_acc &hop_acc, dbl_acc &len_acc)
+{
+  // Calculate stats for shortest paths.
+  for (vertex src: boost::make_iterator_range(boost::vertices(g)))
+    {
+      vector<int> dist(num_vertices(g));
+      vector<vertex> pred(num_vertices(g));
+
+      boost::dijkstra_shortest_paths
+        (g, src,
+         boost::predecessor_map(&pred[0]).distance_map(&dist[0]));
+
+      for (vertex dst: boost::make_iterator_range(boost::vertices(g)))
+        if (src != dst)
+          {
+            // Make sure the path was found.
+            assert(pred[dst] != dst);
+
+            // Record the number of hops.
+            int hops = 0;
+            vertex c = dst;
+            while(c != src)
+              {
+                c = pred[c];
+                ++hops;
+              }
+            hop_acc(hops);
+
+            // Record the path length.
+            len_acc(dist[dst]);
+          }
     }
 }

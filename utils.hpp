@@ -48,6 +48,23 @@ get_vertexes(const graph &g)
 }
 
 /**
+ * True if the graph is connected.
+ *
+ * @return: true if the graph is connected, false otherwise.
+ */
+template<typename G>
+bool
+is_connected(const G &g)
+{
+  int c[boost::num_vertices(g)];
+
+  // "num" is the number of connected components.
+  int num = boost::connected_components(g, c);
+
+  return num == 1;
+}
+
+/**
  * Generate a random number from min to max, including both min and
  * max.
  */
@@ -95,5 +112,10 @@ interpret(const std::string &name, const std::string &text,
 
   return i->second;
 }
+
+// For the shortest paths between all node pairs, calculate the
+// statistics for hops and lengths.
+void
+calc_sp_stats(const graph &g, dbl_acc &hop_acc, dbl_acc &len_acc);
 
 #endif /* UTILS_HPP */
