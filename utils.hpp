@@ -5,9 +5,22 @@
 #include "graph.hpp"
 #include "utils.hpp"
 
+#include <boost/graph/connected_components.hpp>
+
+#include <boost/accumulators/accumulators.hpp>
+#include <boost/accumulators/statistics.hpp>
+#include <boost/accumulators/statistics/mean.hpp>
+#include <boost/accumulators/statistics/variance.hpp>
+
 #include <iostream>
 
 using namespace std;
+
+// The accumulator with double values.                                                                      
+typedef ba::accumulator_set<double, ba::stats<ba::tag::min,
+                                              ba::tag::mean,
+                                              ba::tag::max,
+                                              ba::tag::variance> > dbl_acc;
 
 nt_t
 nt_interpret (const string &nt);
