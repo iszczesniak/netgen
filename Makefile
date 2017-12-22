@@ -1,4 +1,4 @@
-TARGETS = netgen
+TARGETS = netgen stats
 TARGET_OBJS = $(addsuffix .o, $(TARGETS))
 
 OBJS = cli_args.o gabriel.o mypoint.o random.o teventqueue.o utils.o
