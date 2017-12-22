@@ -14,7 +14,7 @@
 
 #include <iostream>
 
-using namespace std;
+namespace ba = boost::accumulators;
 
 // The accumulator with double values.                                                                      
 typedef ba::accumulator_set<double, ba::stats<ba::tag::min,
