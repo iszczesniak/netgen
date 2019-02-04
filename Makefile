@@ -4,7 +4,7 @@ TARGET_OBJS = $(addsuffix .o, $(TARGETS))
 OBJS = cli_args.o gabriel.o mypoint.o random.o teventqueue.o utils.o
 
 CXXFLAGS := $(CXXFLAGS) -g
-CXXFLAGS := $(CXXFLAGS) -std=c++14
+CXXFLAGS := $(CXXFLAGS) -std=c++17
 CXXFLAGS := $(CXXFLAGS) -I include
 
 # Use the C++ linker

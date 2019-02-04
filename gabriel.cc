@@ -49,18 +49,18 @@ generate_gabriel_graph(const cli_args &args)
   {
       vertex src = mapNV[*it];
       set<TNode*> myEdges = (*it)->getEdges();
-      
+
       for (set<TNode*>::iterator itE = myEdges.begin(); itE != myEdges.end(); ++itE)
-      {
-         vertex dst = mapNV[*itE];      
-         (*itE)->removeEdge(*it);
-         edge e;
-         bool status;
-         tie(e, status) = add_edge(src, dst, g);
-         int dist = (int) (sqrt(dist2((*it)->getPoint(), (*itE)->getPoint())) + 0.5);
-         wm[e] = dist;
-         assert(status);    
-      }
+        {
+          vertex dst = mapNV[*itE];
+          (*itE)->removeEdge(*it);
+          auto [ne, s1] = add_edge(src, dst, g);
+          auto [re, s2] = add_edge(dst, src, g);
+          assert(s1 && s2);
+          int dist = (int) (sqrt(dist2((*it)->getPoint(), (*itE)->getPoint())) + 0.5);
+          wm[ne] = dist;
+          wm[re] = dist;
+        }
   }
 
   // <AG> zwolnić pamięć dla P i tr
