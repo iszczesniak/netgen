@@ -5,13 +5,25 @@
 #include "cli_args.hpp"
 #include "utils.hpp"
 
+#include <boost/range.hpp>
+
 #include <iostream>
 #include <iterator>
+#include <random>
 #include <set>
 #include <vector>
 #include <utility>
 
 using namespace std;
+
+template<typename T>
+void
+set_distances(graph &g, int min, int max, T &eng)
+{
+  std::uniform_int_distribution<> rng(min, max);
+  for (const auto &e: boost::make_iterator_range(boost::edges(g)))
+    boost::get(boost::edge_weight, g, e) = rng(eng);
+}
 
 /**
  * Move the vertex from the lonely group to either the set of
@@ -131,6 +143,8 @@ generate_random_graph(const cli_args &args, T &eng)
 
   // Make sure we created the requested number of edges.
   assert(num_edges (g) == args.nr_edges.get());
+
+  set_distances(g, 1, 50, eng);
 
   return g;
 }
